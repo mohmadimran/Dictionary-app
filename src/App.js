@@ -1,55 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const XDictionary = () => {
-  // Initialize the dictionary state
-  const [dictionary] = useState([
+  // Static dictionary data
+  const dictionary = [
     { word: "React", meaning: "A JavaScript library for building user interfaces." },
     { word: "Component", meaning: "A reusable building block in React." },
-    { word: "State", meaning: "An object that stores data for a component." }
-  ]);
+    { word: "State", meaning: "An object that stores data for a component." },
+  ];
 
-  // State for the search term and the result
-  const [searchTerm, setSearchTerm] = useState('');
-  const [result, setResult] = useState('');
+  // State for search term and result
+  const [searchTerm, setSearchTerm] = useState("");
+  const [result, setResult] = useState({ found: false, meaning: "" });
 
-  // Function to handle the search
+  // Function to handle search
   const handleSearch = () => {
-
     const foundWord = dictionary.find(
       (entry) => entry.word.toLowerCase() === searchTerm.toLowerCase()
     );
 
     if (foundWord) {
-      setResult(`Definition: ${foundWord.meaning}`);
+      setResult({ found: true, meaning: foundWord.meaning });
     } else {
-      setResult('Word not found in the dictionary.');
+      setResult({ found: false, meaning: "Word not found in the dictionary." });
     }
   };
 
   return (
-    <div>
-      <h1>XDictionary</h1>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column",gap:"5px"}}>
+      <h1>Dictionary App</h1>
       <div>
         <input
           type="text"
-          placeholder="Enter a word"
+          placeholder="Search for a word..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
       </div>
       <div>
-        {result && (
-          <div>
-            {result.startsWith('Definition:') ? (
-              <>
-                <h3>Definition:</h3>
-                <p>{result.split('Definition: ')[1]}</p>
-              </>
-            ) : (
-              <p>{result}</p>
-            )}
-          </div>
+        <h3>Definition:</h3>
+        {result.meaning && (
+          <p>{result.found ? result.meaning : <>{result.meaning}</>}</p>
         )}
       </div>
     </div>
